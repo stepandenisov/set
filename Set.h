@@ -7,15 +7,22 @@ struct node {
 	node* left;
 	node* right;
 public:
-	void iprint(node* root)
+	node operator=(node &another)
 	{
-		if (root == NULL)   // Базовый случай
+		this->data = another.data;
+		this->left = another.left;
+		this->right = another.right;
+		return *this;
+	}
+	void print_tree(node* root) const
+	{
+		if (root == NULL)
 		{
 			return;
 		}
-		iprint(root->left);   //рекурсивный вызов левого поддерева
-		cout << root->data << " ";
-		iprint(root->right);  //рекурсивный вызов правого поддерева
+		print_tree(root->left);
+		cout << root->data << ", ";
+		print_tree(root->right);
 	}
 };
 class Set
@@ -27,7 +34,7 @@ public:
 	{
 		root = NULL;
 	}
-	bool find(int key)
+	bool find(int key) const
 	{
 		if (!root) return false;
 		node* tmproot = root;
@@ -68,7 +75,7 @@ public:
 						tmproot = tmproot->left;
 						break;
 					}
-						tmproot = tmproot->left;
+					else tmproot = tmproot->left;
 					}
 				else if (tmproot->data < key)
 					{
@@ -78,7 +85,7 @@ public:
 						tmproot = tmproot->right;
 						break;
 					}
-						tmproot = tmproot->right;
+					else tmproot = tmproot->right;
 					}
 			}
 			tmproot->data = key;
@@ -88,9 +95,64 @@ public:
 		}
 		else return false;
 	}
-	void print()
+	void print() const
 	{
-		root->iprint(root);
+		cout << "{";
+		root->print_tree(root);
+		cout << "\b\b}";
+	}
+	bool erase(int key)
+	{
+		node* tmproot = root, *parent = NULL;
+		while (tmproot)
+		{
+			if (tmproot->data > key)
+			{
+				parent = tmproot;
+				tmproot = tmproot->left;
+			}
+			else if (tmproot->data < key)
+			{
+				parent = tmproot;
+				tmproot = tmproot->right;
+			}
+			else if (tmproot->data == key) break;
+		}
+		if (!tmproot) return false;
+		if (!tmproot->right && !tmproot->left) // Лист
+		{
+			if (parent && (parent->data > tmproot->data)) parent->left = NULL;
+			else if (parent && (parent->data < tmproot->data)) parent->right = NULL;
+			else if (tmproot == root) root = NULL;
+			delete tmproot;
+			return true;
+		}
+		else if (!tmproot->left) // Нет левого, есть правое
+		{
+			if (parent && (parent->data > tmproot->data)) parent->left = tmproot->right;
+			else if (parent && (parent->data < tmproot->data)) parent->right = tmproot->right;
+			else if (tmproot == root) root = root->right;
+			delete tmproot;
+			return true;
+		}
+		else if (!tmproot->right) // Нет правого, есть левое
+		{
+			if (parent && (parent->data > tmproot->data)) parent->left = tmproot->left;
+			else if (parent && (parent->data < tmproot->data)) parent->right = tmproot->left;
+			else if (tmproot == root) root = root->left;
+			delete tmproot;
+			return true;
+		}
+		else // Есть оба поддерева
+		{
+			node* ernode = tmproot->right;
+			while (ernode->left)
+				ernode = ernode->left;
+			int value = ernode->data;
+			erase(ernode->data);
+			tmproot->data = value;
+			return true;
+		}
 	}
 };
 
