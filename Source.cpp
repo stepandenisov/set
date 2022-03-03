@@ -1,20 +1,52 @@
 #include "Set.h"
+#define menu "1)Добавить элемент\n2)Удалить элемент\n3)Проверить наличие элемента\n4)Вывести множество на экран\n0)Выход\n"
 int main()
 {
+	setlocale(LC_ALL, "Russian");
 	Set s;
-	s.insert(15);
-	s.insert(30);
-	s.insert(8);
-	s.insert(4);
-	s.insert(5);
-	s.insert(10);
-	s.insert(9);
-	s.insert(11);
-	s.print();
-	cout << endl;
-	s.erase(8);
-	s.erase(15);
-	s.erase(5);
-	s.print();
+	unsigned choice = 1;
+	int value;
+	while (choice)
+	{
+		cout << menu;
+		cin >> choice;
+		switch (choice)
+		{
+		case 1:
+			cout << "Введите значение для добавления: ";
+			cin >> value;
+			(s.insert(int(value))) ? cout << "Значение успешно добавлено" << endl : cout << "Значение уже есть" << endl;
+			break;
+		case 2:
+			cout << "Введите значение для удаления: ";
+			cin >> value;
+			(s.erase(int(value))) ? cout << "Значение успешно удалено" << endl : cout << "Значения нет в множестве" << endl;
+			break;
+		case 3:
+			cout << "Введите значение для проверки: ";
+			cin >> value;
+			(s.find(int(value))) ? cout << "Значение есть" << endl : cout << "Значения нет" << endl;
+			break;
+		case 4:
+			cout << "Множество:\n";
+			cout << s;
+			cout << endl;
+			break;
+		case 0:
+			cout << "Продолжить с пустым множеством?\n1)Да\n2)Нет" << endl;
+			cin >> value;
+			if (value == 1)
+			{
+				choice = 1;
+				s.clear();
+				break;
+			}
+			else
+			{
+				choice = 0;
+				break;
+			}
+		}
+	} 
 	return 0;
 }

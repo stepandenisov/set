@@ -7,7 +7,7 @@ struct node {
 	node* left;
 	node* right;
 public:
-	node operator=(node &another)
+	node operator=(const node &another)
 	{
 		this->data = another.data;
 		this->left = another.left;
@@ -24,7 +24,18 @@ public:
 		cout << root->data << ", ";
 		print_tree(root->right);
 	}
+	void clear_tree(node*& root)
+	{
+		if (root)
+		{
+			if (root->left) clear_tree(root->left);
+			if (root->right) clear_tree(root->right);
+			root = NULL;
+		}
+	}
 };
+
+
 class Set
 {
 private:
@@ -62,44 +73,55 @@ public:
 			root->left = NULL;
 			return true;
 		}
-		if (!find(key))
+		node* tmproot = root;
+		while (tmproot)
 		{
-			node* tmproot = root;
-			while (tmproot)
+			if (tmproot->data > key)
 			{
-				if (tmproot->data > key)
-					{	
-					if (tmproot->left == NULL) 
-					{
-						tmproot->left = new node; 
-						tmproot = tmproot->left;
-						break;
-					}
-					else tmproot = tmproot->left;
-					}
-				else if (tmproot->data < key)
-					{
-					if (tmproot->right == NULL)
-					{
-						tmproot->right = new node;
-						tmproot = tmproot->right;
-						break;
-					}
-					else tmproot = tmproot->right;
-					}
+				if (tmproot->left == NULL)
+				{
+					tmproot->left = new node;
+					tmproot = tmproot->left;
+					break;
+				}
+				else tmproot = tmproot->left;
 			}
-			tmproot->data = key;
-			tmproot->right = NULL;
-			tmproot->left = NULL;
-			return true;
+			else if (tmproot->data < key)
+			{
+				if (tmproot->right == NULL)
+				{
+					tmproot->right = new node;
+					tmproot = tmproot->right;
+					break;
+				}
+				else tmproot = tmproot->right;
+			}
+			else if (tmproot->data == key) return false;
 		}
-		else return false;
+		tmproot->data = key;
+		tmproot->right = NULL;
+		tmproot->left = NULL;
+		return true;
 	}
 	void print() const
 	{
-		cout << "{";
-		root->print_tree(root);
-		cout << "\b\b}";
+		if (root)
+		{
+			cout << "{";
+			root->print_tree(root);
+			cout << "\b\b}";
+		}
+		return;
+	}
+	friend std::ostream& operator<<(std::ostream& out, Set& s)
+	{
+		if (s.root)
+		{
+			cout << "{";
+			s.root->print_tree(s.root);
+			cout << "\b\b}";
+		}
+		return out;
 	}
 	bool erase(int key)
 	{
@@ -153,6 +175,14 @@ public:
 			tmproot->data = value;
 			return true;
 		}
+	}
+	void clear()
+	{
+		root->clear_tree(root);
+	}
+	~Set()
+	{
+		clear();
 	}
 };
 
