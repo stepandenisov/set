@@ -13,40 +13,48 @@ int main()
 		switch (choice)
 		{
 		case 1:
+			system("cls");
 			cout << "Введите значение для добавления: ";
 			cin >> value;
 			(s.insert(int(value))) ? cout << "Значение успешно добавлено" << endl : cout << "Значение уже есть" << endl;
 			break;
 		case 2:
+			system("cls");
 			cout << "Введите значение для удаления: ";
 			cin >> value;
 			(s.erase(int(value))) ? cout << "Значение успешно удалено" << endl : cout << "Значения нет в множестве" << endl;
 			break;
 		case 3:
+			system("cls");
 			cout << "Введите значение для проверки: ";
 			cin >> value;
 			(s.find(int(value))) ? cout << "Значение есть" << endl : cout << "Значения нет" << endl;
 			break;
 		case 4:
+			system("cls");
 			cout << "Множество:\n";
 			cout << s;
 			cout << endl;
 			break;
 		case 0:
+			system("cls");
 			cout << "Продолжить с пустым множеством?\n1)Да\n2)Нет" << endl;
 			cin >> value;
 			if (value == 1)
 			{
 				choice = 1;
 				s.clear();
+				system("cls");
 				break;
 			}
 			else
 			{
 				choice = 0;
+				system("cls");
 				break;
 			}
 		}
 	} 
 	return 0;
 }
+
