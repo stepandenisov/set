@@ -5,7 +5,7 @@ int main()
 	setlocale(LC_ALL, "Russian");
 	Set s;
 	unsigned choice = 1;
-	int value;
+	double value;
 	while (choice)
 	{
 		cout << menu;
@@ -16,19 +16,19 @@ int main()
 			system("cls");
 			cout << "Введите значение для добавления: ";
 			cin >> value;
-			(s.insert(int(value))) ? cout << "Значение успешно добавлено" << endl : cout << "Значение уже есть" << endl;
+			(s.insert(int(value))) ? cout << "Значение " << int(value)<< " успешно добавлено" << endl : cout << "Значение " << int(value)<< " уже есть" << endl;
 			break;
 		case 2:
 			system("cls");
 			cout << "Введите значение для удаления: ";
 			cin >> value;
-			(s.erase(int(value))) ? cout << "Значение успешно удалено" << endl : cout << "Значения нет в множестве" << endl;
+			(s.erase(int(value))) ? cout << "Значение " << int(value) << " успешно удалено" << endl : cout << "Значения " << int(value) << " нет в множестве" << endl;
 			break;
 		case 3:
 			system("cls");
 			cout << "Введите значение для проверки: ";
 			cin >> value;
-			(s.find(int(value))) ? cout << "Значение есть" << endl : cout << "Значения нет" << endl;
+			(s.find(int(value))) ? cout << "Значение " << int(value) << " есть" << endl : cout << "Значения " << int(value) << " нет" << endl;
 			break;
 		case 4:
 			system("cls");
